@@ -1,4 +1,4 @@
-## Visiblity
+## Open Source
 - https://www.npmjs.org/
   - https://www.npmjs.org/doc/misc/npm-scripts.html
 - http://browserify.org/
@@ -18,10 +18,14 @@
 - https://github.com/caolan/async
 - https://github.com/spumko/hapi
 - https://github.com/facebook/react
-
-## Clarity
 - http://expressjs.com/guide.html
+- http://emberjs.com/guides/
+
+## Community
+- https://github.com/jquery/jquery/blob/master/CONTRIBUTING.md
 - https://github.com/jashkenas/backbone/blob/master/CONTRIBUTING.md
+- https://github.com/angular/angular.js/blob/master/CHANGELOG.md
+- https://github.com/spumko/hapi/issues/milestones?state=closed
 
 ## Outreach
 - https://twitter.com/reactjs
