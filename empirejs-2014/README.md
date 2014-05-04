@@ -16,7 +16,6 @@
 - http://underscorejs.org/
 - http://nodejs.org/api/
 - https://github.com/caolan/async
-- http://yogthos.github.io/lib-noir/
 - https://github.com/spumko/hapi
 - https://github.com/facebook/react
 
@@ -25,7 +24,6 @@
 - https://github.com/jashkenas/backbone/blob/master/CONTRIBUTING.md
 
 ## Outreach
-- https://twitter.com/trevor_landau/status/460841002832363521
 - https://twitter.com/reactjs
 - http://emberjs.com/blog/
 - http://facebook.github.io/react/blog/
