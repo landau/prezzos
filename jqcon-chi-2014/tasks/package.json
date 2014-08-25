@@ -1,0 +1,22 @@
+{
+  "name": "tasks",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "watchify ./lib/index.jsx -t reactify -d -o ./public/js/bundle.js -v",
+    "build": "browserify -t reactify ./lib/index.jsx --debug > ./public/js/bundle.js"
+  },
+  "dependencies": {
+    "is-predicate": "^0.10.0",
+    "react": "^0.11.1",
+    "underscore-contrib": "^0.3.0"
+  },
+  "devDependencies": {
+    "browserify": "^5.11.1",
+    "reactify": "^0.14.0",
+    "watchify": "^1.0.2"
+  },
+  "author": "Trevor Landau",
+  "license": "ISC"
+}

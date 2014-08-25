@@ -1,0 +1,38 @@
+input[type=text].no-shadow, input[type=text].no-shadow:focus {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+body {
+  background: #b9b9b9;
+  margin-top: 20px;
+}
+
+#main {
+}
+
+#list, #sidebar {
+  background: #f9f9f9;
+  border-radius: 2px;
+}
+
+#list {
+  border-radius: 0 2px 2px 2px;
+  box-shadow: 6px 5px 15px #999;
+}
+
+.filter-form {
+  margin: 0 0 10px;
+}
+
+.filter-form input[type=search] {
+  background: #fefefe;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+#sidebar {
+  border-radius: 2px 0 2px 2px;
+  padding: 15px;
+  box-shadow: -6px 5px 15px #999;
+}
