@@ -23,7 +23,7 @@ function jump(a) { /* 1 arity */ }
 function jog(a, b) { /* 2 arity */ }
 function run(a, b, c) { /* 3 arity */ }
 
-//-- Term | Referential Transparency
+//-- Term | pure function/referential transparency
 
 function append(arr, val) { return arr.concat(val); }
 
@@ -33,7 +33,7 @@ console.log(arr); // [1]
 console.log(x); // [1, 2]
 
 
-function appendMutate(val) {
+function appendMutate(arr, val) {
   arr.append(val);
   return arr;
 }
