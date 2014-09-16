@@ -1,7 +1,7 @@
 //-- Beyond forEach
 var items = [];
 
-$('p.quote').each(function(el) {
+$('p.quote').each(function(el) { // commonly seen practice of creating an array of values
   items.push(el.innerText);
 });
 
@@ -9,6 +9,7 @@ $('p.quote').each(function(el) {
 var ns = [1,2,3,4,5];
 var doubled = [];
 
+// A lot less concise than functions
 for (var i = 0, l = ns.length; i < l; i++) {
   ns[i] *= 2;
   doubled.push(ns[i] * 2);
@@ -19,11 +20,13 @@ var obj = { dog: 'bark' };
 var arr = [5, 10, 32, 50];
 
 //-- Term | Function arity
-function jump(a) { /* 1 arity */ }
+function jump(a) { /* 1 arity */ } // Number of arguments a function accepts
 function jog(a, b) { /* 2 arity */ }
 function run(a, b, c) { /* 3 arity */ }
 
 //-- Term | pure function/referential transparency
+// For the same given input return the same output
+// without mutating a given/global value
 
 function append(arr, val) { return arr.concat(val); }
 
@@ -44,6 +47,7 @@ console.log(x); // [1, 2]
 arr === x; // true
 
 //-- Concept | Immutability | Strings
+// No concern about usage of x elsewhere
 var x = 'I Love Functional Programming';
 x === x + '!!!'; // false
 
@@ -53,6 +57,7 @@ var planet = {
   type: 'terrestrial'
 };
 
+// Safely manipulate objects by making shallow copies
 var earthLike = _.clone(planet);
 
 var earthLike = _.extend({}, planet, { name: 'JSEarth' });
@@ -62,7 +67,7 @@ var earthLike = _.defaults({ name: 'JSEarth' }, planet);
 //-- Concept | Immutability | mutating local data
 function selectionSort(arr) {
   var N = arr.length;
-  var localArr = arr.concat(); // local copy
+  var localArr = arr.concat(); // local copy is safe to mutate
 
   for (var i = 0; i < N; i++){
     var min = i;
@@ -70,6 +75,10 @@ function selectionSort(arr) {
     for (var j = i + 1; j < N; j++) {
       if (localArr[j] < localArr[min]) min = j;
     }
+
+    var tmp = localArr[i];
+    localArr[j] = localArr[min];
+    localArr[i] = tmp;
   }
 
   return localArr;
@@ -77,8 +86,8 @@ function selectionSort(arr) {
 
 //-- Concept | Recursion
 function fib(n) {
-  if (n < 2) return 1; // Base case!!!
-  return fib(n - 2) + fib(n - 1);
+  if (n < 2) return 1; // Base case!!! not unlike the middle paramter to a for construct
+  return fib(n - 2) + fib(n - 1); // calls itself
 }
 
 fib(20);
@@ -88,9 +97,9 @@ function forEach(arr, fn, ctx) {
   var l = arr.length;
 
   function each(i) {
-    if (i > l) return;
+    if (i > l) return; // base case
     fn.call(ctx, arr[i], i, arr);
-    return each(i + 1);
+    return each(i + 1); // tail recursion
   }
 
   return each(0);
@@ -98,30 +107,33 @@ function forEach(arr, fn, ctx) {
 
 //-- Concept | Returning functions, closures
 function property(prop) {
-  return function (obj) {
+  return function (obj) { // save for later look ups in an object
     return obj[prop];
   };
 }
 
 var getName = property('name');
 getName({ name: 'Trevor' }); // Trevor
+getName({ foo: 'bar' }); // undefined
 
 
 //-- Concept arguments
+// Array like object with index access and a length property
 function obtainEnlightment(a, b) {
   arguments[0] === a; // true
   arguments[1] === b; // true
 }
 
 //-- Concept toArray
-_slice = Array.prototype.slice;
-_slice.call(arguments);
+_slice = Array.prototype.slice; 
+_slice.call(arguments); // convert arguments to an array
 
 _slice = Function.call.bind(_slice);
 _slice(arguments);
 _slice(arguments, 1); // remove initial N values
 
 //-- Native JS | apply
+// spread values of an array across as arguments to a given function
 function add(a, b) {
   if (!arguments.length) throw Error();
   if (arguments.length === 1) return a;
@@ -142,15 +154,17 @@ function addMany(a, b) {
   if (arguments.length < 3) return add(a, b);
 
   var ans = 0;
+  // lots to keep track of
   for (var i = 0, l = arguments.length; i < l; i + 2) {
     ans += add(arguments[i], arguments[i + 1]);
   }
   return ans;
 }
 
+// 2 lines! ;)
 function addMany(a, b) {
-  if (arguments.length < 3) return add(a, b);
-  return add(a, addMany.apply(null, _.rest(arguments)));
+  if (arguments.length < 3) return add(a, b); // basecase
+  return add(a, addMany.apply(null, _.rest(arguments))); // no new special logic other than base case
 }
 
 addMany(1, 1); // 2
@@ -166,7 +180,7 @@ var numbers = [
 ];
 
 function flatten(values) {
-  return _concat.apply([], values);
+  return _concat.apply([], values); // how many lines of code to concat N number arrays impertively? :)
 }
 
 flatten(numbers); // [1, 2, 3, 4, 5, 6]
@@ -175,6 +189,7 @@ flatten(numbers); // [1, 2, 3, 4, 5, 6]
 var info = console.log.bind(console, 'INFO:');
 var warn = console.log.bind(console, 'WARN:');
 
+// Nice logging
 info('jQCon!!!'); // INFO: jQCon!!!
 warn('jQCon!!!'); // WARN: jQCon!!!
 
@@ -188,6 +203,7 @@ function bind(fn, ctx) {
 }
 
 //-- Native JS || bind || preserve context
+// maintain proper property access for `this`
 function Pony(weight) {
   this.weight = weight;
 }
@@ -202,6 +218,7 @@ values.forEach(ulysses.fly); // oops this.weight is undefined
 values.forEach(ulysses.fly.bind(ulysses)); // Success!
 
 //-- Native JS || reduce || assign es6
+// merge n number of `src` into `dest`
 function assign(dest) {
   if (arguments.length < 2) return dest;
 
@@ -219,23 +236,24 @@ assign(basics, meta);
 console.log(basics); // { name: 'Trevor', age: 28, interests: [...] }
 
 //-- Native JS || reduce  || implementation
+// Transform an array of values into some new value
 function reduce(arr, fn, init) {
   var l = arr.length;
 
   function _reduce(acc, idx) {
-    if (idx > l) return acc;
-    var next = fn(acc, arr[idx], idx, arr);
+    if (idx > l) return acc; // base case
+    var next = fn(acc, arr[idx], idx, arr); // prepare next value (aka the accumulator)
     return _reduce(next, idx + 1);
   }
 
-  if (!init) return _reduce(arr[0], 1);
-  return _reduce(init, 0);
+  if (!init) return _reduce(arr[0], 1); // default accumulator is at beginning of array
+  return _reduce(init, 0); // accumulator is provided
 }
 
 //-- Native JS || reduce arrays  || unique
 function unique() {
   return _.reduce(arguments, function(acc, arr) {
-    return acc.indexOf(v) < 0 ? acc.concat(v) : acc;
+    return acc.indexOf(v) < 0 ? acc.concat(v) : acc; // in the array already, skip it
   }, []);
 }
 
@@ -249,23 +267,24 @@ var people = [
   { name: 'Josh' }
 ];
 
-var names = people.map(function(o) {
+var names = people.map(function(o) { 
   return o.name;
 });
 
 // ['Trevor', 'Ryan', 'Josh']
 
-var serialized = people.map(JSON.stringify);
+var serialized = people.map(JSON.stringify); // pass any function!
 
 //-- Native JS || map || implementation
 function map(arr, fn, ctx) {
-  return arr.reduce(function(acc, v) {
-    return acc.concat(fn.call(ctx, v));
+  return arr.reduce(function(acc, v) { // reuse reduce by providing an array as an accumulator
+    return acc.concat(fn.call(ctx, v)); // add the value returned by `fn` to the array
   }, []);
 }
 
 //-- Native JS || map || Generate list of ajax promises
 function times(fn, end) {
+  // create an array of [undefined...undefined] and map the indexs
   return Array.apply(null, Array(end)).map(function(undef, idx) {
     return fn(idx);
   });
@@ -275,7 +294,7 @@ function mkPageUrl(n) {
   return '/page/' + n;
 }
 
-var promises = times(mkPageUrl, 20).map($.get);
+var promises = times(mkPageUrl, 20).map($.get); // array of promises to resolve!
 
 //-- Native JS || filter || remove odds
 function isEven(n) { return n % 2 === 0; }
@@ -284,8 +303,8 @@ var evens = [1, 2, 3].filter(isEven); // [2]
 
 //-- Native JS || filter || implementation
 function filter(arr, fn, ctx) {
-  return arr.reduce(function(acc, v) {
-    return fn.call(ctx, v) ? acc.concat(v) : acc;
+  return arr.reduce(function(acc, v) { // reuse reduce again!
+    return fn.call(ctx, v) ? acc.concat(v) : acc; // if returned value of `fn` is true then add value to new array
   }, []);
 }
 
@@ -294,13 +313,13 @@ function identity(v) { return v; }
 
 function range(start, end) {
   return times(identity, end + 1).filter(function(n) {
-    return n >= start;
+    return n >= start; // remove values that aren't >= start
   });
 }
 
 range(1, 5); // [1, 2, 3, 4, 5]
 
-//-- Native JS || some || adding start value
+//-- Native JS || some || are all values in an array satified by a given predicate?
 var people = [
   { name: 'Trevor', age: 28 },
   { name: 'Ryan', age: 29 },
